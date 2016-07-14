@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Cancel Sessions</title>
+</head>
+    
+<body>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+    
+    <div style="padding:25px">
+        <form style="padding:25px" id="gform" method="POST" action="https://script.google.com/macros/s/AKfycbzbUHUZR5te0iVsylR455Rrlclz8kyNrSU06YWebC7dVZIMx_NK/exec">
+
+        <div class="row">
+            <div class="col-sm-2" style="padding-left:15px">
+                <br>
+                <b>First name:</b><br>
+                    <input type="text" name="firstname" disabled><br><br>
+                <b>Last name:</b><br>
+                    <input type="text" name="lastname" disabled><br><br>
+                <b>GU NetID: </b><netid_error></netid_error><br>
+                    <input type="text" name="netid" disabled><br>
+            </div>
+            <div class="col-sm-1"></div>
+            <div class="col-sm-8" style="padding-left:15px">
+                <br><b>You are signed up for the following sessions:</b><br>
+                <div class="row" style="margin-left:0px;margin-right:0px">
+                    <sessions></sessions>
+                </div>
+            </div>
+            <div class="col-sm-1"></div>
+        </div>
+        
+        </form>
+    
+        <ty></ty>
+    </div>
+    
+
+    <script>
+    $(document).ready(function() {
+        getMySessions(["Thorax","Abdomen","Suturing"]);  //sets category list
+        $("input[name=firstname]").val(urlParam("firstname"));
+        $("input[name=lastname]").val(urlParam("lastname"));
+        $("input[name=netid]").val(urlParam("netid"));
+    });
+        
+        
+    function getMySessions(categories) {
+        $.getJSON("https://spreadsheets.google.com/feeds/list/13MMrzzNG7ExhzYrp9MP1R1xtYd5Np1KQCBI-FkKoiZ0/od6/public/values?alt=json", function(data) {
+            console.log(data);
+            var i = 0; //number of sessions
+            var j = 0; //number of categories
+            
+            var section = [];
+            var sessions = [""];
+            
+    for (title in categories) {
+        for (index in data.feed.entry) {
+                if (data.feed.entry[index].gsx$open.$t=="TRUE" && data.feed.entry[index].gsx$title.$t == categories[title]) {
+                    if (data.feed.entry[index].gsx$attendees.$t.lastIndexOf(urlParam("netid")) != -1) {
+                    i++;
+                    var fieldid = data.feed.entry[index].gsx$id.$t;
+                   
+                    if (section[j] != data.feed.entry[index].gsx$title.$t) {
+                                                
+                        if (section.indexOf(data.feed.entry[index].gsx$title.$t) != -1) {
+                            j = section.indexOf(data.feed.entry[index].gsx$title.$t);
+                        } 
+                        else {
+                            j = sessions.length;
+                                sessions[j] = "";
+                                if (section != "") {sessions[j] = sessions[j] + "</div>";}
+                                section[j] = data.feed.entry[index].gsx$title.$t;
+                                sessions[j] = sessions[j] + "<div class=\"col-sm-4\" <br><br><b>" + section[j] + ":</b><br>";
+                            // + "<div class=\"col-sm-2\" style=\"text-align:center;height:127px;padding-bottom:25px;background-color:lightgrey;border:0.5px;border-style:solid\"><input type=\"radio\" name=\"" + data.feed.entry[index].gsx$title.$t + "\" value=\"none\"><br>None</div>";
+                        }
+                        
+
+                    }
+                   
+                    sessions[j] = sessions[j] + "<div style=\"text-align:center;height:127px;padding-bottom:25px;background-color:lightgreen;border:0.5px;border-style:solid\"><input type=\"checkbox\" name=\"" + data.feed.entry[index].gsx$title.$t + "\" value=\"" + fieldid + "\"> " + "<br>" + data.feed.entry[index].gsx$date.$t + "<br>" + data.feed.entry[index].gsx$starttime.$t + "<br><y style=\"background-color:lightgreen\">(" + data.feed.entry[index].gsx$enrolled.$t + "/" + data.feed.entry[index].gsx$ofslots.$t + ")</y></div><br>";
+               }
+                if (data.feed.entry[index].gsx$waitlisted.$t.lastIndexOf(urlParam("netid")) != -1) {
+                     i++;
+                    var fieldid = data.feed.entry[index].gsx$id.$t;
+                   
+                    if (section[j] != data.feed.entry[index].gsx$title.$t) {
+                                                
+                        if (section.indexOf(data.feed.entry[index].gsx$title.$t) != -1) {
+                            j = section.indexOf(data.feed.entry[index].gsx$title.$t);
+                        } 
+                        else {
+                            j = sessions.length;
+                                sessions[j] = "";
+                                if (section != "") {sessions[j] = sessions[j] + "</div>";}
+                                section[j] = data.feed.entry[index].gsx$title.$t;
+                                sessions[j] = sessions[j] + "<br><b>" + section[j] + ":</b><br><div class=\"row\" style=\"margin-left:0px;margin-right:0px\">";
+                        }
+                        
+
+                    }
+                    
+                    sessions[j] = sessions[j] + "<div style=\"text-align:center;height:127px;padding-bottom:25px;background-color:pink;border:0.5px;border-style:solid\"><input type=\"checkbox\" name=\"" + data.feed.entry[index].gsx$title.$t + "\" value=\"" + fieldid + "\"> " + "<br>" + data.feed.entry[index].gsx$date.$t + "<br>" + data.feed.entry[index].gsx$starttime.$t + "<br><y style=\"background-color:pink\"><b>FULL</b> (" + data.feed.entry[index].gsx$enrolled.$t + "/" + data.feed.entry[index].gsx$ofslots.$t + ")</y><br><z style=\"background-color:yellow\">Waitlist: " + data.feed.entry[index].gsx$waitlist.$t + "</z></div><br>";
+                }}
+           }}
+            if (i != 0) {
+                $("sessions").append(sessions);
+                $("sessions").append("<br><div class=\"col-xs-12\" style=\"text-align:center\"><input type=\"submit\" value=\"Cancel Selected Sessions\"></div>");
+            }
+            else {
+                $("sessions").append("<br><b style=\"color:red\">None</b>");
+            }
+        });}
+        
+        
+function urlParam(name) {
+    var re = new RegExp("(?:[?&]" + name + "=)([^=?&]+)","g");
+    try {return(decodeURIComponent(re.exec(window.location.href)[1]));}
+    catch(e) {return("error")};
+}        
+    </script>    
+
+<script data-cfasync="false" type="text/javascript">
+    function checkNetID(netid) {
+        var re = /((?:[a-z][a-z]*[0-9]+[a-z0-9]*))/i;
+        return (re.test(netid));
+    }
+    
+    
+    // get all data in form and return object
+    function getFormData() {
+      var elements = document.getElementById("gform").elements; // all form elements
+      var fields = Object.keys(elements).map(function(k) {
+        if(elements[k].name !== undefined) {
+          return elements[k].name;
+        }
+      }).filter(function(item, pos, self) {
+        return self.indexOf(item) == pos && item;
+      });
+      var data = {};
+      fields.forEach(function(k){
+        data[k] = elements[k].value;
+      });
+      console.log(data);
+      return data;
+    }
+
+    function handleFormSubmit(event) {  // handles form submit withtout any jquery
+      event.preventDefault();           // we are submitting via xhr below
+      var data = getFormData();         // get the values submitted in the form
+      if (!checkNetID(data.netid)) {
+          console.log("Invalid NetID");
+          $("netid_error").html("<z style=\"background-color:pink\" id=\"netid_error\">Invalid NetID.</z>");
+          return false;
+      }
+        else {
+            var url = event.target.action;  //
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', url);
+            // xhr.withCredentials = true;
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.onreadystatechange = function() {
+                console.log( xhr.status, xhr.statusText )
+                console.log(xhr.responseText);
+                document.getElementById('gform').style.display = 'none'; // hide form
+                $("ty").html("<b>Thank you.</b>");
+                return;
+            };
+            // url encode form data for sending as post data
+            var encoded = Object.keys(data).map(function(k) {
+                return encodeURIComponent(k) + '=' + encodeURIComponent(data[k])
+            }).join('&')
+            xhr.send(encoded);
+        }
+    }
+    function loaded() {
+      console.log('contact form submission handler loaded successfully');
+      // bind to the submit event of our form
+      var form = document.getElementById('gform');
+      form.addEventListener("submit", handleFormSubmit, false);
+    };
+    document.addEventListener('DOMContentLoaded', loaded, false);    
+</script>
+    
+</body>
+</html>
