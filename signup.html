@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>Thorax</title>
+    <title>Sign-Up</title>
 </head>
     
 <body>
@@ -37,8 +37,8 @@
 
     <script>
     $(document).ready(function() {
-        getSessions([document.getElementsByTagName("title")[0].innerHTML]);  //sets category list to page title
-        //getSessions(["Thorax","Abdomen","Suturing"])
+        //getSessions([document.getElementsByTagName("title")[0].innerHTML]);  //sets category list to page title
+        getSessions(["Thorax","Abdomen","Suturing"]);
     });
         
         
@@ -148,7 +148,7 @@
             // xhr.withCredentials = true;
             xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
             xhr.onreadystatechange = function() {
-                console.log( xhr.status, xhr.statusText )
+                console.log(xhr.status, xhr.statusText)
                 console.log(xhr.responseText);
                 document.getElementById('gform').style.display = 'none'; // hide form
                 $("ty").html("<b>Thank you.</b>");
