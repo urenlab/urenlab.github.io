@@ -15,7 +15,7 @@
         <div class="row">
             <div class="col-sm-2" style="padding-left:15px">
                 <br>
-                    <input type="hidden" name="action" value="cancel">
+                    <input type="hidden" name="act" value="cancel">
                 <b>First name:</b><br>
                     <input type="text" name="firstname" disabled><br><br>
                 <b>Last name:</b><br>
@@ -134,7 +134,7 @@ function urlParam(name) {
     function getFormData() {
       var elements = document.getElementById("gform").elements; // all form elements
       var fields = Object.keys(elements).map(function(k) {
-        if(elements[k].name !== undefined) {
+        if(elements[k].name !== undefined && ((elements[k].type != "radio" && elements[k].type != "checkbox")||elements[k].checked==true)) {
           return elements[k].name;
         }
       }).filter(function(item, pos, self) {
