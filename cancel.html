@@ -85,6 +85,7 @@
                }
                 if (data.feed.entry[index].gsx$waitlisted.$t.lastIndexOf(urlParam("netid")) != -1) {
                      i++;
+                    var waitlistnum = data.feed.entry[index].gsx$waitlisted.$t.split("/").indexOf(urlParam("netid"));
                     var fieldid = data.feed.entry[index].gsx$id.$t;
                    
                     if (section[j] != data.feed.entry[index].gsx$title.$t) {
@@ -103,7 +104,7 @@
 
                     }
                     
-                    sessions[j] = sessions[j] + "<div style=\"text-align:center;height:127px;padding-bottom:25px;background-color:pink;border:0.5px;border-style:solid\"><input type=\"checkbox\" name=\"" + data.feed.entry[index].gsx$title.$t + "\" value=\"" + fieldid + "\"> " + "<br>" + data.feed.entry[index].gsx$date.$t + "<br>" + data.feed.entry[index].gsx$starttime.$t + "<br><y style=\"background-color:pink\"><b>FULL</b> (" + data.feed.entry[index].gsx$enrolled.$t + "/" + data.feed.entry[index].gsx$ofslots.$t + ")</y><br><z style=\"background-color:yellow\">Waitlist: " + data.feed.entry[index].gsx$waitlist.$t + "</z></div><br>";
+                    sessions[j] = sessions[j] + "<div style=\"text-align:center;height:127px;padding-bottom:25px;background-color:pink;border:0.5px;border-style:solid\"><input type=\"checkbox\" name=\"" + data.feed.entry[index].gsx$title.$t + "\" value=\"" + fieldid + "\"> " + "<br>" + data.feed.entry[index].gsx$date.$t + "<br>" + data.feed.entry[index].gsx$starttime.$t + "<br><y style=\"background-color:pink\"><b>FULL</b> (" + data.feed.entry[index].gsx$enrolled.$t + "/" + data.feed.entry[index].gsx$ofslots.$t + ")</y><br><z style=\"background-color:yellow\">Waitlist: " + waitlistnum + "/" + data.feed.entry[index].gsx$waitlist.$t + "</z></div><br>";
                 }}
            }}
             if (i != 0) {
