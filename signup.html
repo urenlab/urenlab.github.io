@@ -61,7 +61,7 @@
     <script>
     $(document).ready(function() {
         //getSessions([document.getElementsByTagName("title")[0].innerHTML]);  //sets category list to page title
-        getSessions(["Thorax","Abdomen","Suturing"]);
+        getSessions([urlParam("type")]);
     });
         
         
@@ -170,6 +170,12 @@
         return names;
     }
     
+    function urlParam(name) {
+        var re = new RegExp("(?:[?&]" + name + "=)([^=?&]+)","g");
+        try {return(decodeURIComponent(re.exec(window.location.href)[1]));}
+        catch(e) {return("error")};
+    } 
+        
     </script>    
 
 <script data-cfasync="false" type="text/javascript">
