@@ -104,7 +104,7 @@
                         names = "<br><br><div class=\"session-hover\" style=\"padding:15px\"><b>Enrolled:</b>" + names + "</div>";
                     }
                         
-                    sessions[j] = sessions[j] + "<div class=\"col-xs-3 session\" style=\"text-align:center;height:127px;padding-bottom:25px;background-color:lightgreen;border:0.5px;border-style:solid\"><input type=\"radio\" name=\"" + data.feed.entry[index].gsx$title.$t + "\" value=\"" + fieldid + "\" required> " + "<br>" + data.feed.entry[index].gsx$date.$t + "<br>" + data.feed.entry[index].gsx$starttime.$t + "<br>(" + data.feed.entry[index].gsx$enrolled.$t + "/" + data.feed.entry[index].gsx$ofslots.$t + ")" + names + "</div>";
+                    sessions[j] = sessions[j] + "<div class=\"col-sm-3 session\" style=\"text-align:center;height:127px;padding-bottom:25px;background-color:lightgreen;border:0.5px;border-style:solid\"><input type=\"radio\" name=\"" + data.feed.entry[index].gsx$title.$t + "\" value=\"" + fieldid + "\" required> " + "<br>" + data.feed.entry[index].gsx$date.$t + "<br>" + data.feed.entry[index].gsx$starttime.$t + "<br>(" + data.feed.entry[index].gsx$enrolled.$t + "/" + data.feed.entry[index].gsx$ofslots.$t + ")" + names + "</div>";
                }
                 else {
                      i++;
@@ -139,7 +139,7 @@
                         names = names + "<br><br><b>Waitlisted:</b>" + getNames(waitlisted) + "</div>";
                     } else {names = names + "</div>";}
                     
-                    sessions[j] = sessions[j] + "<div class=\"col-xs-3 session\" style=\"text-align:center;height:127px;padding-bottom:25px;background-color:pink;border:0.5px;border-style:solid\"><input type=\"radio\" name=\"" + data.feed.entry[index].gsx$title.$t + "\" value=\"" + fieldid + "\" required> " + "<br>" + data.feed.entry[index].gsx$date.$t + "<br>" + data.feed.entry[index].gsx$starttime.$t + "<br><b>FULL</b> (" + data.feed.entry[index].gsx$enrolled.$t + "/" + data.feed.entry[index].gsx$ofslots.$t + ")<br><z style=\"background-color:yellow\">Waitlist: " + data.feed.entry[index].gsx$waitlist.$t + "</z>" + names + "</div>";
+                    sessions[j] = sessions[j] + "<div class=\"col-sm-3 session\" style=\"text-align:center;height:127px;padding-bottom:25px;background-color:pink;border:0.5px;border-style:solid\"><input type=\"radio\" name=\"" + data.feed.entry[index].gsx$title.$t + "\" value=\"" + fieldid + "\" required> " + "<br>" + data.feed.entry[index].gsx$date.$t + "<br>" + data.feed.entry[index].gsx$starttime.$t + "<br><b>FULL</b> (" + data.feed.entry[index].gsx$enrolled.$t + "/" + data.feed.entry[index].gsx$ofslots.$t + ")<br><z style=\"background-color:yellow\">Waitlist: " + data.feed.entry[index].gsx$waitlist.$t + "</z>" + names + "</div>";
                 }}
            }}
             if (i != 0) {
