@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+    <title>Sign-Up</title>
 </head>
     
 <body>
@@ -38,7 +39,7 @@
         <form style="padding:25px" id="gform" method="POST" action="https://script.google.com/macros/s/AKfycbzbUHUZR5te0iVsylR455Rrlclz8kyNrSU06YWebC7dVZIMx_NK/exec">
 
         <div class="row">
-            <div class="col-md-3" style="padding-left:15px">
+            <div class="col-md-12" style="padding-left:15px"> //col-md-3
                 <br>
                     <input type="hidden" name="act" value="add">
                 <b>First name:</b><br>
@@ -48,8 +49,8 @@
                 <b>GU NetID: </b><netid_error></netid_error><br>
                 <div style="white-space:nowrap"><input type="text" name="netid" size=10 required> @georgetown.edu<br></div>
             </div>
-            <div class="col-md-1"></div>
-            <div class="col-md-8" style="padding-left:15px">
+            <div class="col-md-12"></div> //col-md-1
+            <div class="col-md-12" style="padding-left:15px"> //col-md-8
                 <sessions></sessions>
             </div>
         </div>
@@ -59,8 +60,8 @@
 
     <script>
     $(document).ready(function() {
-        getSessions([document.getElementsByTagName("title")[0].innerHTML]);  //sets category list to page title
-        //getSessions([urlParam("type")]);
+        //getSessions([window.parent.document.getElementsByTagName("title")[0].innerHTML]);  //sets category list to page title
+        getSessions([urlParam("type")]);
     });
         
         
@@ -247,4 +248,3 @@
     
 </body>
 </html>
- 
