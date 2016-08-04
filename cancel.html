@@ -16,6 +16,7 @@
             <div class="col-sm-2" style="padding-left:15px">
                 <br>
                     <input type="hidden" name="act" value="cancel">
+                    <input type="hidden" name="confirm">
                 <b>First name:</b><br>
                     <input type="text" name="firstname" disabled><br><br>
                 <b>Last name:</b><br>
@@ -45,6 +46,7 @@
         $("input[name=firstname]").val(urlParam("firstname"));
         $("input[name=lastname]").val(urlParam("lastname"));
         $("input[name=netid]").val(urlParam("netid"));
+        $("input[name=confirm]").val(urlParam("confirm"));
     });
         
         
