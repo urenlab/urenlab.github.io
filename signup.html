@@ -41,6 +41,7 @@
         <div class="row">
             <div class="col-md-12" style="padding-left:15px"> <!--col-md-3-->
                     <input type="hidden" name="act" value="add">
+                    <input type="hidden" name="confirm">
                 <b>First name:</b><br>
                     <input type="text" name="firstname" size=27 required><br><br>
                 <b>Last name:</b><br>
@@ -60,6 +61,7 @@
     <script>
     $(document).ready(function() {
         //getSessions([window.parent.document.getElementsByTagName("title")[0].innerHTML]);  //sets category list to page title
+        $("input[name=confirm]").val((new Date()).getTime());
         getSessions([urlParam("type")]);
     });
         
