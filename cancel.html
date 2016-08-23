@@ -160,6 +160,8 @@ function urlParam(name) {
           return false;
       }
         else {
+            data.netid = data.netid.toLowerCase();
+            
             var url = event.target.action;  //
             var xhr = new XMLHttpRequest();
             document.getElementById('gform').style.display = 'none'; // hide form
