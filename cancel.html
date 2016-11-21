@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -100,7 +101,8 @@
                                 sessions[j] = "";
                                 if (section != "") {sessions[j] = sessions[j] + "</div>";}
                                 section[j] = data.feed.entry[index].gsx$title.$t;
-                                sessions[j] = sessions[j] + "<br><b>" + section[j] + ":</b><br><div class=\"row\" style=\"margin-left:0px;margin-right:0px\">";
+                                sessions[j] = sessions[j] + "<div class=\"col-sm-4\" <br><br><b>" + section[j] + ":</b><br>"
+                                    //<div class=\"row\" style=\"margin-left:0px;margin-right:0px\">";
                         }
                         
 
