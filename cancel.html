@@ -11,7 +11,7 @@
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
     
     <div style="padding:25px">
-        <form style="padding:25px" id="gform" method="POST" action="https://script.google.com/macros/s/AKfycbzpK9tRj1u5-f2oCqThXUwKeOa3b3sleMg_bJAGDB3uk2_YfKI/exec">
+        <form style="padding:25px" id="gform" method="POST" action="https://script.google.com/macros/s/AKfycbzZuRWm5sghiSYuwDiisQgA66lWkL4jxNuxnoeXmeooNgHUD6A/exec">
 
         <div class="row">
             <div class="col-sm-2" style="padding-left:15px">
@@ -52,7 +52,7 @@
         
         
     function getMySessions(categories) {
-        $.getJSON("https://spreadsheets.google.com/feeds/list/1mbXtyeaa-N8Ne-HCtv_uHslKIN6vofyBOKLtij2sCMc/od6/public/values?alt=json", function(data) {
+        $.getJSON("https://spreadsheets.google.com/feeds/list/1Wjthj1vgvalSdYTqOkYoFWPWpqtV1e7gTvPMnAgyBJ0/od6/public/values?alt=json", function(data) {
             console.log(data);
             var i = 0; //number of sessions
             var j = 0; //number of categories
