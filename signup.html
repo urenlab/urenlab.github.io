@@ -36,7 +36,7 @@
     <div style="padding:0px">
         <ty></ty>
         
-        <form style="padding:0px" id="gform" method="POST" action="https://script.google.com/macros/s/AKfycbzpK9tRj1u5-f2oCqThXUwKeOa3b3sleMg_bJAGDB3uk2_YfKI/exec">
+        <form style="padding:0px" id="gform" method="POST" action="https://script.google.com/macros/s/AKfycbzZuRWm5sghiSYuwDiisQgA66lWkL4jxNuxnoeXmeooNgHUD6A/exec">
 
         <div class="row">
             <div class="col-md-12" style="padding-left:15px"> <!--col-md-3-->
@@ -67,7 +67,7 @@
         
         
     function getSessions(categories) {
-        $.getJSON("https://spreadsheets.google.com/feeds/list/1mbXtyeaa-N8Ne-HCtv_uHslKIN6vofyBOKLtij2sCMc/od6/public/values?alt=json", function(data) {
+        $.getJSON("https://spreadsheets.google.com/feeds/list/1Wjthj1vgvalSdYTqOkYoFWPWpqtV1e7gTvPMnAgyBJ0/od6/public/values?alt=json", function(data) {
             console.log(data);
             var i = 0; //number of sessions
             var j = 0; //number of categories
@@ -154,7 +154,7 @@
         
         $.ajax({
             async: false,
-            url: "https://spreadsheets.google.com/feeds/list/1mbXtyeaa-N8Ne-HCtv_uHslKIN6vofyBOKLtij2sCMc/2/public/values?alt=json",
+            url: "https://spreadsheets.google.com/feeds/list/1Wjthj1vgvalSdYTqOkYoFWPWpqtV1e7gTvPMnAgyBJ0/2/public/values?alt=json",
             success: function(data) {
                 names="";
                 for (id in netids) {
