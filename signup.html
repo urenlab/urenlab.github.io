@@ -59,197 +59,206 @@
     
 
     <script>
-    $(document).ready(function() {
-        //getSessions([window.parent.document.getElementsByTagName("title")[0].innerHTML]);  //sets category list to page title
-        $("input[name=confirm]").val((new Date()).getTime());
-        getSessions([urlParam("type")]);
-    });
-        
-        
-    function getSessions(categories) {
-        $.getJSON("https://spreadsheets.google.com/feeds/list/1Wjthj1vgvalSdYTqOkYoFWPWpqtV1e7gTvPMnAgyBJ0/od6/public/values?alt=json", function(data) {
-            console.log(data);
-            var i = 0; //number of sessions
-            var j = 0; //number of categories
-            
-            var section = [];
-            var sessions = [""];
-            
-    for (title in categories) {
-        for (index in data.feed.entry) {
-                if (data.feed.entry[index].gsx$open.$t=="TRUE" && data.feed.entry[index].gsx$title.$t == categories[title]) {
-                    if (parseInt(data.feed.entry[index].gsx$ofslots.$t)-parseInt(data.feed.entry[index].gsx$enrolled.$t)>0) {
-                    i++;
-                    var fieldid = data.feed.entry[index].gsx$id.$t;
-                   
-                    if (section[j] != data.feed.entry[index].gsx$title.$t) {
-                                                
-                        if (section.indexOf(data.feed.entry[index].gsx$title.$t) != -1) {
-                            j = section.indexOf(data.feed.entry[index].gsx$title.$t);
-                        } 
-                        else {
-                            j = sessions.length;
-                                sessions[j] = "";
-                                if (section != "") {sessions[j] = sessions[j] + "</div>";}
-                                section[j] = data.feed.entry[index].gsx$title.$t;
-                                sessions[j] = sessions[j] + "<br><b>" + section[j] + ":</b><br><div class=\"row\" style=\"margin-left:0px;margin-right:0px\">";
-                        }
-                        
-
-                    }
-                    
-                    names = "";
-                    if (data.feed.entry[index].gsx$attendees.$t.length > 0) {
-                        enrolled = data.feed.entry[index].gsx$attendees.$t.split("/");
-                        enrolled.shift();
-                        names = getNames(enrolled);
-                        names = "<br><br><div class=\"session-hover\" style=\"padding:15px\"><b>Enrolled:</b>" + names + "</div>";
-                    }
-                        
-                    sessions[j] = sessions[j] + "<div class=\"col-xs-3 session\" style=\"text-align:center;height:127px;padding-bottom:25px;background-color:lightgreen;border:0.5px;border-style:solid\"><input type=\"radio\" name=\"" + data.feed.entry[index].gsx$title.$t + "\" value=\"" + fieldid + "\" required> " + "<br>" + data.feed.entry[index].gsx$date.$t + "<br>" + data.feed.entry[index].gsx$starttime.$t + "<br>(" + data.feed.entry[index].gsx$enrolled.$t + "/" + data.feed.entry[index].gsx$ofslots.$t + ")" + names + "</div>";
-               }
-                else {
-                     i++;
-                    var fieldid = data.feed.entry[index].gsx$id.$t;
-                   
-                    if (section[j] != data.feed.entry[index].gsx$title.$t) {
-                                                
-                        if (section.indexOf(data.feed.entry[index].gsx$title.$t) != -1) {
-                            j = section.indexOf(data.feed.entry[index].gsx$title.$t);
-                        } 
-                        else {
-                            j = sessions.length;
-                                sessions[j] = "";
-                                if (section != "") {sessions[j] = sessions[j] + "</div>";}
-                                section[j] = data.feed.entry[index].gsx$title.$t;
-                                sessions[j] = sessions[j] + "<br><b>" + section[j] + ":</b><br><div class=\"row\" style=\"margin-left:0px;margin-right:0px\">";
-                        }
-                        
-
-                    }
-                    
-                    names = "";
-                    if (data.feed.entry[index].gsx$attendees.$t.length > 0) {
-                        enrolled = data.feed.entry[index].gsx$attendees.$t.split("/");
-                        enrolled.shift();
-                        names = "<br><br><div class=\"session-hover\" style=\"padding:15px\"><b>Enrolled:</b>" + getNames(enrolled);
-                    }
-                    
-                    if (data.feed.entry[index].gsx$waitlisted.$t.length > 0) {
-                        waitlisted = data.feed.entry[index].gsx$waitlisted.$t.split("/");
-                        waitlisted.shift();
-                        names = names + "<br><br><b>Waitlisted:</b>" + getNames(waitlisted) + "</div>";
-                    } else {names = names + "</div>";}
-                    
-                    sessions[j] = sessions[j] + "<div class=\"col-xs-3 session\" style=\"text-align:center;height:127px;padding-bottom:25px;background-color:pink;border:0.5px;border-style:solid\"><input type=\"radio\" name=\"" + data.feed.entry[index].gsx$title.$t + "\" value=\"" + fieldid + "\" required> " + "<br>" + data.feed.entry[index].gsx$date.$t + "<br>" + data.feed.entry[index].gsx$starttime.$t + "<br><b>FULL</b> (" + data.feed.entry[index].gsx$enrolled.$t + "/" + data.feed.entry[index].gsx$ofslots.$t + ")<br><z style=\"background-color:yellow\">Waitlist: " + data.feed.entry[index].gsx$waitlist.$t + "</z>" + names + "</div>";
-                }}
-           }}
-            if (i != 0) {
-                $("sessions").append(sessions);
-                $("sessions").append("<br><div class=\"row\" style=\"text-align:center\"><input type=\"submit\" value=\"Submit\"></div>");
-            } 
-        });}
-    
-    function getNames(netids,names) {
-        
-        $.ajax({
-            async: false,
-            url: "https://spreadsheets.google.com/feeds/list/1Wjthj1vgvalSdYTqOkYoFWPWpqtV1e7gTvPMnAgyBJ0/2/public/values?alt=json",
-            success: function(data) {
-                names="";
-                for (id in netids) {
-                   for (index2 in data.feed.entry) {
-                        if (data.feed.entry[index2].gsx$netid.$t == netids[id] && data.feed.entry[index2].gsx$act.$t == "add") {
-                           names = names + "<br>" + data.feed.entry[index2].gsx$firstname.$t + " " + data.feed.entry[index2].gsx$lastname.$t;
-                            break;
-                        }
-                    } 
-                }
-            }
+        $(document).ready(function() {
+            //getSessions([window.parent.document.getElementsByTagName("title")[0].innerHTML]);  //sets category list to page title
+            $("input[name=confirm]").val((new Date()).getTime());
+            getSessions([urlParam("type")]);
         });
-        
-        return names;
-    }
-    
-    function urlParam(name) {
-        var re = new RegExp("(?:[?&]" + name + "=)([^=?&]+)","g");
-        try {return(decodeURIComponent(re.exec(window.location.href)[1]));}
-        catch(e) {return("error")};
-    } 
-        
-    </script>    
 
-<script data-cfasync="false" type="text/javascript">
-    function checkNetID(netid) {
-        var re = /((?:[a-z][a-z]*[0-9]+[a-z0-9]*))/i;
-        return (re.test(netid));
-    }
-    
-    
-    // get all data in form and return object
-    function getFormData() {
-      var elements = document.getElementById("gform").elements; // all form elements
-      var fields = Object.keys(elements).map(function(k) {
-        if(elements[k].name !== undefined && ((elements[k].type != "radio" && elements[k].type != "checkbox")||elements[k].checked==true)) {
-          return elements[k].name;
-        }
-      }).filter(function(item, pos, self) {
-        return self.indexOf(item) == pos && item;
-      });
-      var data = {};
-      fields.forEach(function(k){
-        data[k] = elements[k].value;
-      });
-      console.log(data);
-      return data;
-    }
 
-    function handleFormSubmit(event) {  // handles form submit withtout any jquery
-      event.preventDefault();           // we are submitting via xhr below
-      var data = getFormData();         // get the values submitted in the form
-      if (!checkNetID(data.netid)) {
-          console.log("Invalid NetID");
-          $("netid_error").html("<z style=\"background-color:pink\" id=\"netid_error\">Invalid NetID.</z>");
-          return false;
-      }
-        else {
-            data.netid = data.netid.toLowerCase();
-            
-            var url = event.target.action;  //
-            var xhr = new XMLHttpRequest();
-            document.getElementById('gform').style.display = 'none'; // hide form
-                    $("ty").html("<b>Thank you.</b>");
-            xhr.open('POST', url);
-            // xhr.withCredentials = true;
-            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-            xhr.onreadystatechange = function() {
-                console.log(xhr.status, xhr.statusText)
-                console.log(xhr.responseText);
-                var response = JSON.parse(xhr.responseText);
-                if (response.result == "success") {
-                    //document.getElementById('gform').style.display = 'none'; // hide form
-                    $("ty").html("<b>Thank you.</b>");
+        function getSessions(categories) {
+            $.getJSON("https://sheets.googleapis.com/v4/spreadsheets/1Wjthj1vgvalSdYTqOkYoFWPWpqtV1e7gTvPMnAgyBJ0/values/sessions?alt=json&key=AIzaSyDvCDyWQIy2SlU8KFufZIvKMgIwR-Hw1Vg", function(data) {
+                console.log(data);
+                var i = 0; //number of sessions
+                var j = 0; //number of categories
+
+                var section = [];
+                var sessions = [""];
+
+                for (title in categories) {
+                    for (index in data.values) {
+                        if (data.values[index][0] == "TRUE" && data.values[index][2] == categories[title]) {
+                            if (parseInt(data.values[index][5]) - parseInt(data.values[index][6]) > 0) {
+                                i++;
+                                var fieldid = data.values[index][1];
+
+                                if (section[j] != data.values[index][2]) {
+
+                                    if (section.indexOf(data.values[index][2]) != -1) {
+                                        j = section.indexOf(data.values[index][2]);
+                                    } else {
+                                        j = sessions.length;
+                                        sessions[j] = "";
+                                        if (section != "") {
+                                            sessions[j] = sessions[j] + "</div>";
+                                        }
+                                        section[j] = data.values[index][2];
+                                        sessions[j] = sessions[j] + "<br><b>" + section[j] + ":</b><br><div class=\"row\" style=\"margin-left:0px;margin-right:0px\">";
+                                    }
+
+
+                                }
+
+                                names = "";
+                                if (data.values[index][8].length > 0) {
+                                    enrolled = data.values[index][8].split("/");
+                                    enrolled.shift();
+                                    names = getNames(enrolled);
+                                    names = "<br><br><div class=\"session-hover\" style=\"padding:15px\"><b>Enrolled:</b>" + names + "</div>";
+                                }
+
+                                sessions[j] = sessions[j] + "<div class=\"col-xs-3 session\" style=\"text-align:center;height:127px;padding-bottom:25px;background-color:lightgreen;border:0.5px;border-style:solid\"><input type=\"radio\" name=\"" + data.values[index][2] + "\" value=\"" + fieldid + "\" required> " + "<br>" + data.values[index][3] + "<br>" + data.values[index][4] + "<br>(" + data.values[index][6] + "/" + data.values[index][5] + ")" + names + "</div>";
+                            } else {
+                                i++;
+                                var fieldid = data.values[index][1];
+
+                                if (section[j] != data.values[index][2]) {
+
+                                    if (section.indexOf(data.values[index][2]) != -1) {
+                                        j = section.indexOf(data.values[index][2]);
+                                    } else {
+                                        j = sessions.length;
+                                        sessions[j] = "";
+                                        if (section != "") {
+                                            sessions[j] = sessions[j] + "</div>";
+                                        }
+                                        section[j] = data.values[index][2];
+                                        sessions[j] = sessions[j] + "<br><b>" + section[j] + ":</b><br><div class=\"row\" style=\"margin-left:0px;margin-right:0px\">";
+                                    }
+
+
+                                }
+
+                                names = "";
+                                if (data.values[index][8].length > 0) {
+                                    enrolled = data.values[index][8].split("/");
+                                    enrolled.shift();
+                                    names = "<br><br><div class=\"session-hover\" style=\"padding:15px\"><b>Enrolled:</b>" + getNames(enrolled);
+                                }
+
+                                if (data.values[index].gsx$waitlisted.$t.length > 0) {
+                                    waitlisted = data.values[index].gsx$waitlisted.$t.split("/");
+                                    waitlisted.shift();
+                                    names = names + "<br><br><b>Waitlisted:</b>" + getNames(waitlisted) + "</div>";
+                                } else {
+                                    names = names + "</div>";
+                                }
+
+                                sessions[j] = sessions[j] + "<div class=\"col-xs-3 session\" style=\"text-align:center;height:127px;padding-bottom:25px;background-color:pink;border:0.5px;border-style:solid\"><input type=\"radio\" name=\"" + data.values[index][2] + "\" value=\"" + fieldid + "\" required> " + "<br>" + data.values[index][3] + "<br>" + data.values[index][4] + "<br><b>FULL</b> (" + data.values[index][6] + "/" + data.values[index][5] + ")<br><z style=\"background-color:yellow\">Waitlist: " + data.values[index][9] + "</z>" + names + "</div>";
+                            }
+                        }
+                    }
                 }
-                else $("ty").html("<div style=\"background-color=pink\">Error</div>");
-                
-                
-                return;
-            };
-            // url encode form data for sending as post data
-            var encoded = Object.keys(data).map(function(k) {
-                return encodeURIComponent(k) + '=' + encodeURIComponent(data[k])
-            }).join('&')
-            xhr.send(encoded);
+                if (i != 0) {
+                    $("sessions").append(sessions);
+                    $("sessions").append("<br><div class=\"row\" style=\"text-align:center\"><input type=\"submit\" value=\"Submit\"></div>");
+                }
+            });
         }
-    }
-    function loaded() {
-      console.log('contact form submission handler loaded successfully');
-      // bind to the submit event of our form
-      var form = document.getElementById('gform');
-      form.addEventListener("submit", handleFormSubmit, false);
-    };
-    document.addEventListener('DOMContentLoaded', loaded, false);    
-</script>
+
+        function getNames(netids, names) {
+
+            $.ajax({
+                async: false,
+                url: "https://spreadsheets.google.com/feeds/list/1Wjthj1vgvalSdYTqOkYoFWPWpqtV1e7gTvPMnAgyBJ0/2/public/values?alt=json",
+                success: function(data) {
+                    names = "";
+                    for (id in netids) {
+                        for (index2 in data.values) {
+                            if (data.values[index2].gsx$netid.$t == netids[id] && data.values[index2].gsx$act.$t == "add") {
+                                names = names + "<br>" + data.values[index2].gsx$firstname.$t + " " + data.values[index2].gsx$lastname.$t;
+                                break;
+                            }
+                        }
+                    }
+                }
+            });
+
+            return names;
+        }
+
+        function urlParam(name) {
+            var re = new RegExp("(?:[?&]" + name + "=)([^=?&]+)", "g");
+            try {
+                return (decodeURIComponent(re.exec(window.location.href)[1]));
+            } catch (e) {
+                return ("error")
+            };
+        }
+
+    </script>
+
+    <script data-cfasync="false" type="text/javascript">
+        function checkNetID(netid) {
+            var re = /((?:[a-z][a-z]*[0-9]+[a-z0-9]*))/i;
+            return (re.test(netid));
+        }
+
+
+        // get all data in form and return object
+        function getFormData() {
+            var elements = document.getElementById("gform").elements; // all form elements
+            var fields = Object.keys(elements).map(function(k) {
+                if (elements[k].name !== undefined && ((elements[k].type != "radio" && elements[k].type != "checkbox") || elements[k].checked == true)) {
+                    return elements[k].name;
+                }
+            }).filter(function(item, pos, self) {
+                return self.indexOf(item) == pos && item;
+            });
+            var data = {};
+            fields.forEach(function(k) {
+                data[k] = elements[k].value;
+            });
+            console.log(data);
+            return data;
+        }
+
+        function handleFormSubmit(event) { // handles form submit withtout any jquery
+            event.preventDefault(); // we are submitting via xhr below
+            var data = getFormData(); // get the values submitted in the form
+            if (!checkNetID(data.netid)) {
+                console.log("Invalid NetID");
+                $("netid_error").html("<z style=\"background-color:pink\" id=\"netid_error\">Invalid NetID.</z>");
+                return false;
+            } else {
+                data.netid = data.netid.toLowerCase();
+
+                var url = event.target.action; //
+                var xhr = new XMLHttpRequest();
+                document.getElementById('gform').style.display = 'none'; // hide form
+                $("ty").html("<b>Thank you.</b>");
+                xhr.open('POST', url);
+                // xhr.withCredentials = true;
+                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                xhr.onreadystatechange = function() {
+                    console.log(xhr.status, xhr.statusText)
+                    console.log(xhr.responseText);
+                    var response = JSON.parse(xhr.responseText);
+                    if (response.result == "success") {
+                        //document.getElementById('gform').style.display = 'none'; // hide form
+                        $("ty").html("<b>Thank you.</b>");
+                    } else $("ty").html("<div style=\"background-color=pink\">Error</div>");
+
+
+                    return;
+                };
+                // url encode form data for sending as post data
+                var encoded = Object.keys(data).map(function(k) {
+                    return encodeURIComponent(k) + '=' + encodeURIComponent(data[k])
+                }).join('&')
+                xhr.send(encoded);
+            }
+        }
+
+        function loaded() {
+            console.log('contact form submission handler loaded successfully');
+            // bind to the submit event of our form
+            var form = document.getElementById('gform');
+            form.addEventListener("submit", handleFormSubmit, false);
+        };
+        document.addEventListener('DOMContentLoaded', loaded, false);
+
+    </script>
     
 </body>
 </html>
