@@ -160,13 +160,13 @@
 
             $.ajax({
                 async: false,
-                url: "https://spreadsheets.google.com/feeds/list/1Wjthj1vgvalSdYTqOkYoFWPWpqtV1e7gTvPMnAgyBJ0/2/public/values?alt=json",
+                url: "https://sheets.googleapis.com/v4/spreadsheets/1Wjthj1vgvalSdYTqOkYoFWPWpqtV1e7gTvPMnAgyBJ0/values/responses?alt=json&key=AIzaSyDvCDyWQIy2SlU8KFufZIvKMgIwR-Hw1Vg",
                 success: function(data) {
                     names = "";
                     for (id in netids) {
                         for (index2 in data.values) {
-                            if (data.values[index2].gsx$netid.$t == netids[id] && data.values[index2].gsx$act.$t == "add") {
-                                names = names + "<br>" + data.values[index2].gsx$firstname.$t + " " + data.values[index2].gsx$lastname.$t;
+                            if (data.values[index2][3] == netids[id] && data.values[index2][7] == "add") {
+                                names = names + "<br>" + data.values[index2][1] + " " + data.values[index2][2];
                                 break;
                             }
                         }
@@ -176,6 +176,7 @@
 
             return names;
         }
+
 
         function urlParam(name) {
             var re = new RegExp("(?:[?&]" + name + "=)([^=?&]+)", "g");
