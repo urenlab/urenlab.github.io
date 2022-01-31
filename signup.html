@@ -136,8 +136,8 @@
                                     names = "<br><br><div class=\"session-hover\" style=\"padding:15px\"><b>Enrolled:</b>" + getNames(enrolled);
                                 }
 
-                                if (data.values[index].gsx$waitlisted.$t.length > 0) {
-                                    waitlisted = data.values[index].gsx$waitlisted.$t.split("/");
+                                if (data.values[index][9].length > 0) {
+                                    waitlisted = data.values[index][9].split("/");
                                     waitlisted.shift();
                                     names = names + "<br><br><b>Waitlisted:</b>" + getNames(waitlisted) + "</div>";
                                 } else {
