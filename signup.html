@@ -100,7 +100,7 @@
                                 }
 
                                 names = "";
-                                if (data.values[index][8].length > 0) {
+                                if (data.values[index][8]?.length > 0) {
                                     enrolled = data.values[index][8].split("/");
                                     enrolled.shift();
                                     names = getNames(enrolled);
@@ -130,13 +130,13 @@
                                 }
 
                                 names = "";
-                                if (data.values[index][8].length > 0) {
+                                if (data.values[index][8]?.length > 0) {
                                     enrolled = data.values[index][8].split("/");
                                     enrolled.shift();
                                     names = "<br><br><div class=\"session-hover\" style=\"padding:15px\"><b>Enrolled:</b>" + getNames(enrolled);
                                 }
 
-                                if (data.values[index][9].length > 0) {
+                                if (data.values[index][9]?.length > 0) {
                                     waitlisted = data.values[index][9].split("/");
                                     waitlisted.shift();
                                     names = names + "<br><br><b>Waitlisted:</b>" + getNames(waitlisted) + "</div>";
