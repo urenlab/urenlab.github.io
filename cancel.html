@@ -87,7 +87,7 @@
 
                                 sessions[j] = sessions[j] + "<div style=\"text-align:center;height:127px;padding-bottom:25px;background-color:lightgreen;border:0.5px;border-style:solid\"><input type=\"checkbox\" name=\"" + data.values[index][2] + "\" value=\"" + fieldid + "\"> " + "<br>" + data.values[index][3] + "<br>" + data.values[index][4] + "<br><y style=\"background-color:lightgreen\">(" + data.values[index][6] + "/" + data.values[index][5] + ")</y></div><br>";
                             }
-                            if (data.values[index][9]? != undefined && data.values[index][9]?.lastIndexOf(urlParam("netid")) != -1) {
+                            if (typeof(data.values[index][9]?) != "undefined" && data.values[index][9]?.lastIndexOf(urlParam("netid")) != -1) {
                                 i++;
                                 var waitlistnum = data.values[index][9].split("/").indexOf(urlParam("netid"));
                                 var fieldid = data.values[index][1];
