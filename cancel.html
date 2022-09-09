@@ -89,7 +89,7 @@
                             }
                             if (data.values[index][9]?.lastIndexOf(urlParam("netid")) != -1) {
                                 i++;
-                                var waitlistnum = data.values[index][9].split("/").indexOf(urlParam("netid"));
+                                var waitlistnum = data.values[index][9]?.split("/")?.indexOf(urlParam("netid"));
                                 var fieldid = data.values[index][1];
 
                                 if (section[j] != data.values[index][2]) {
